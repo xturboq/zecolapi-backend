@@ -65,3 +65,22 @@ create table if not exists post_favour
     index idx_postId (postId),
     index idx_userId (userId)
 ) comment '帖子收藏';
+
+
+
+
+CREATE TABLE `interface_info` (
+                                  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                  `name` varchar(256) NOT NULL COMMENT '名称',
+                                  `description` varchar(256) DEFAULT NULL COMMENT '描述',
+                                  `url` varchar(512) NOT NULL COMMENT '接口地址',
+                                  `requestHeader` text COMMENT '请求头',
+                                  `responseHeader` text COMMENT '响应头',
+                                  `status` int NOT NULL DEFAULT '0' COMMENT '接口状态（0-关闭，1-开启）',
+                                  `method` varchar(256) NOT NULL COMMENT '请求类型',
+                                  `userId` bigint NOT NULL COMMENT '创建人',
+                                  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                  `isDelete` tinyint NOT NULL DEFAULT '0' COMMENT '是否删除(0-未删, 1-已删)',
+                                  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='接口信息';
