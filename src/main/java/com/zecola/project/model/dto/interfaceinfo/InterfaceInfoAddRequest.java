@@ -1,4 +1,4 @@
-package com.zecola.project.model.dto.interfaceinfo;
+package com.zecola.project.model.dto.interfaceInfo;
 
 
 import lombok.Data;
