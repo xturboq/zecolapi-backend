@@ -9,8 +9,7 @@ import com.zecola.project.exception.BusinessException;
 import com.zecola.project.exception.ThrowUtils;
 import com.zecola.project.mapper.InterfaceInfoMapper;
 import com.zecola.project.model.entity.InterfaceInfo;
-import com.zecola.project.model.entity.InterfaceInfo;
-import com.zecola.project.model.entity.interfaceInfo;
+
 import com.zecola.project.service.InterfaceInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
