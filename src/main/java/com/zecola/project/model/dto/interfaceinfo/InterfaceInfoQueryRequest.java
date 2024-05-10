@@ -1,4 +1,4 @@
-package com.zecola.project.model.dto.interfaceinfo;
+package com.zecola.project.model.dto.interfaceInfo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
