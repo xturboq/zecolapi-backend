@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zecola.project.annotation.AuthCheck;
-import com.zecola.project.common.BaseResponse;
-import com.zecola.project.common.DeleteRequest;
-import com.zecola.project.common.ErrorCode;
-import com.zecola.project.common.ResultUtils;
+import com.zecola.project.common.*;
 import com.zecola.project.constant.CommonConstant;
 import com.zecola.project.exception.BusinessException;
 import com.zecola.project.exception.ThrowUtils;
@@ -18,8 +15,10 @@ import com.zecola.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
 import com.zecola.project.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
 import com.zecola.project.model.entity.InterfaceInfo;
 import com.zecola.project.model.entity.User;
+import com.zecola.project.model.enums.InterfaceInfoStatusEnum;
 import com.zecola.project.service.InterfaceInfoService;
 import com.zecola.project.service.UserService;
+import com.zecola.zecolapiclientsdk.client.ZecolApiClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 帖子接口
+ * 接口管理
  *
  * 
  */
@@ -45,6 +44,9 @@ public class InterfaceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ZecolApiClient zecolApiClient;
 
     // region 增删改查
 
@@ -197,7 +199,96 @@ public class InterfaceInfoController {
         return ResultUtils.success(interfaceInfoPage);
     }
 
+    /**
+     * 发布
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest, HttpServletRequest request) {
 
+        if (idRequest == null || idRequest.getId() <= 0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        //1. 校验该接口是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        //如果查询结果为空
+        if (oldInterfaceInfo == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //2. 校验该接口是否可以调用
+        //todo 这里需要进行修改
+        com.zecola.zecolapiclientsdk.model.User user = new com.zecola.zecolapiclientsdk.model.User();
+        user.setUsername("test");
+        String username = zecolApiClient.getUserNameByPost(user);
+        // 如果username为空或空白字符串
+        if(StringUtils.isBlank(username)){
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"接口验证失败");
+        }
+        // 创建一个InterfaceInfo对象
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+
+
+        /*if (interfaceInfoUpdateRequest == null || interfaceInfoUpdateRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        BeanUtils.copyProperties(interfaceInfoUpdateRequest, interfaceInfo);
+        // 参数校验
+        interfaceInfoService.validInterfaceInfo(interfaceInfo, false);
+        User user = userService.getLoginUser(request);
+        long id = interfaceInfoUpdateRequest.getId();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 仅本人或管理员可修改
+        if (!oldInterfaceInfo.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+        }
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);*/
+
+
+    /**
+     * 下线
+     * @param idRequest
+     * @param request
+     * @return
+     */
+
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = "admin")
+
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        //1. 校验该接口是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        //如果查询结果为空
+        if (oldInterfaceInfo == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 创建一个InterfaceInfo对象
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
 
 
 
