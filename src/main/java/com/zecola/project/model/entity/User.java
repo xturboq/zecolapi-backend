@@ -9,37 +9,16 @@ import java.util.Date;
 /**
  * 用户
  *
- * 
+ * @TableName user
  */
 @TableName(value = "user")
 @Data
 public class User implements Serializable {
-
     /**
      * id
      */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
-
-    /**
-     * 用户账号
-     */
-    private String userAccount;
-
-    /**
-     * 用户密码
-     */
-    private String userPassword;
-
-    /**
-     * 开放平台id
-     */
-    private String unionId;
-
-    /**
-     * 公众号openId
-     */
-    private String mpOpenId;
 
     /**
      * 用户昵称
@@ -47,19 +26,39 @@ public class User implements Serializable {
     private String userName;
 
     /**
+     * 账号
+     */
+    private String userAccount;
+
+    /**
      * 用户头像
      */
     private String userAvatar;
 
     /**
-     * 用户简介
+     * 性别
      */
-    private String userProfile;
+    private Integer gender;
 
     /**
-     * 用户角色：user/admin/ban
+     * 用户角色: user, admin
      */
     private String userRole;
+
+    /**
+     * 密码
+     */
+    private String userPassword;
+
+    /**
+     * 签名 accessKey
+     */
+    private String accessKey;
+
+    /**
+     * 签名 secretKey
+     */
+    private String secretKey;
 
     /**
      * 创建时间
