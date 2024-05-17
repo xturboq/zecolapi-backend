@@ -340,7 +340,7 @@ public class InterfaceInfoController {
      * @param request
      * @return
 
-     @PostMapping("/my/list/page/vo") public BaseResponse<Page<InterfaceInfoVO>> listMyInterfaceInfoVOByPage(@RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest,
+     @PostMapping("/my/list/page/vo") public BaseResponse<Page<InterfaceInfoVO>> listMyInterfaceInfoVOByPage(@RequestBody UserInterfaceInfoQueryRequest interfaceInfoQueryRequest,
      HttpServletRequest request) {
      if (interfaceInfoQueryRequest == null) {
      throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -365,7 +365,7 @@ public class InterfaceInfoController {
      * @param request
      * @return
 
-     @PostMapping("/search/page/vo") public BaseResponse<Page<InterfaceInfoVO>> searchInterfaceInfoVOByPage(@RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest,
+     @PostMapping("/search/page/vo") public BaseResponse<Page<InterfaceInfoVO>> searchInterfaceInfoVOByPage(@RequestBody UserInterfaceInfoQueryRequest interfaceInfoQueryRequest,
      HttpServletRequest request) {
      long size = interfaceInfoQueryRequest.getPageSize();
      // 限制爬虫
