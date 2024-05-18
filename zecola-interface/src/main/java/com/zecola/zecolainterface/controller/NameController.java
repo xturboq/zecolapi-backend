@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 名称 API
  *
- * @author yupi
+ * @author zecola
  */
 @RestController
 @RequestMapping("/name")
@@ -37,8 +37,8 @@ public class NameController {
         // 不能直接获取秘钥
         //        String secretKey = request.getHeader("secretKey");
 
-        // 2.校验权限,这里模拟一下,直接判断 accessKey 是否为"yupi",实际应该查询数据库验证权限
-        if (!accessKey.equals("yupi")){
+        // 2.校验权限,这里模拟一下,直接判断 accessKey 是否为"zecola",实际应该查询数据库验证权限
+        if (!accessKey.equals("zecola")){
             throw new RuntimeException("无权限");
         }
 
